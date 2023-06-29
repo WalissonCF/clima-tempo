@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs';
+
+import { OpenWeatherService } from 'src/app/core/services/open-weather-service/open-weather.service';
 
 @Component({
   selector: 'app-home',
@@ -12,26 +15,45 @@ export class HomeComponent implements OnInit {
     maximumAge: 0 // Descarta a localização em cache
   };
 
+  constructor(
+    private openWeatherService: OpenWeatherService
+  ) { }
+
   ngOnInit(): void {
     this.getLocationUser();
   }
 
   private getLocationUser(): void {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.handleSuccess, this.handleError, this.options);
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => this.handleSuccess(position),
+        this.handleError,
+        this.options);
     } else {
       console.log('Geolocalização não suportada no navegador.');
     }
   }
 
   private handleSuccess(position: GeolocationPosition): void {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    const latitude: number = position.coords.latitude;
+    const longitude: number = position.coords.longitude;
 
+    // this.getClimate(latitude, longitude);
     console.log(latitude, longitude);
   }
 
   private handleError(error: GeolocationPositionError): void {
     console.log('Erro ao obter a localização:', error);
+  }
+
+  private getClimate(latitude: number, longitude: number): void {
+    this.openWeatherService
+      .getClimate(latitude, longitude)
+      .pipe(
+        tap((response) => {
+          console.log('response', response);
+        })
+      )
+      .subscribe();
   }
 }
