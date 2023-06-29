@@ -23,7 +23,7 @@ export class ApiService {
     return environment.openweathermapApiKey;
   }
 
-  public getClimate(latitute: string, logintude: string, units: TemperatureUnitsEnum): Observable<any> {
-    return this.api.get<any>(`${this.getUrl()}/onecall?lat=${encodeURIComponent(latitute)}&lon=${encodeURIComponent(logintude)}&units=${units}&appid=${this.getApiKey()}`);
+  public getClimate(latitute: string, longitude: string, units: TemperatureUnitsEnum): Observable<any> {
+    return this.api.get<any>(`${this.getUrl()}/onecall?lat=${encodeURIComponent(latitute)}&lon=${encodeURIComponent(longitude)}&units=${units}&appid=${this.getApiKey()}`);
   }
 }

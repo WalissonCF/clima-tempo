@@ -14,7 +14,7 @@ export class OpenWeatherService {
     private apiService: ApiService
   ) { }
 
-  public getClimate(latitute: number, logintude: number): Observable<any> {
-    return this.apiService.getClimate(latitute.toFixed(2), logintude.toFixed(2), TemperatureUnitsEnum.CELSIUS);
+  public getClimate(latitute: number, longitude: number): Observable<any> {
+    return this.apiService.getClimate(latitute.toFixed(2), longitude.toFixed(2), TemperatureUnitsEnum.CELSIUS);
   }
 }
