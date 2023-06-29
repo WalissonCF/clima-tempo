@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { tap } from 'rxjs';
 
 import { OpenWeatherService } from 'src/app/core/services/open-weather-service/open-weather.service';
+import { OpenWeatherResponse } from 'src/app/core/models/open-weather-response.model';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +11,7 @@ import { OpenWeatherService } from 'src/app/core/services/open-weather-service/o
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public openWeatherResponse: OpenWeatherResponse = {} as OpenWeatherResponse;
   private options: PositionOptions = {
     enableHighAccuracy: true, // Define para obter uma localização mais precisa (se possível)
     timeout: 5000, // Tempo limite para obter a localização (em milissegundos)
@@ -51,7 +54,8 @@ export class HomeComponent implements OnInit {
       .getClimate(latitude, longitude)
       .pipe(
         tap((response) => {
-          console.log('response', response);
+          this.openWeatherResponse = response;
+          console.log('response', this.openWeatherResponse.current);
         })
       )
       .subscribe();

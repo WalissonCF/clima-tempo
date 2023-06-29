@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { OpenWeatherResponse } from '../models/open-weather-response.model';
 import { TemperatureUnitsEnum } from '../enums/temperature-units.enum';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +24,7 @@ export class ApiService {
     return environment.openweathermapApiKey;
   }
 
-  public getClimate(latitute: string, longitude: string, units: TemperatureUnitsEnum): Observable<any> {
-    return this.api.get<any>(`${this.getUrl()}/onecall?lat=${encodeURIComponent(latitute)}&lon=${encodeURIComponent(longitude)}&units=${units}&appid=${this.getApiKey()}`);
+  public getClimate(latitute: string, longitude: string, units: TemperatureUnitsEnum): Observable<OpenWeatherResponse> {
+    return this.api.get<OpenWeatherResponse>(`${this.getUrl()}/onecall?lat=${encodeURIComponent(latitute)}&lon=${encodeURIComponent(longitude)}&units=${units}&appid=${this.getApiKey()}`);
   }
 }
