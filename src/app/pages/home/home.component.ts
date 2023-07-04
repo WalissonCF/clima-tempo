@@ -7,7 +7,7 @@ import { tap } from 'rxjs';
 import { OpenWeatherService } from 'src/app/core/services/open-weather-service/open-weather.service';
 
 import { getClimate } from 'src/app/core/store/selectors/climate.selector';
-import { loadClimateSuccess } from 'src/app/core/store/actions/ climate.action';
+import { loadClimateSuccess } from 'src/app/core/store/actions/climate.action';
 
 @Component({
   selector: 'app-home',
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
     const latitude: number = position.coords.latitude;
     const longitude: number = position.coords.longitude;
 
-    this.getClimate(latitude, longitude);
+    // this.getClimate(latitude, longitude);
     console.log(latitude, longitude);
   }
 

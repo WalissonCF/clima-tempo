@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 
 import { OpenWeatherResponse } from "../../models/open-weather-response.model";
-import { loadClimateError, loadClimateSuccess, loadingClimate } from "../actions/ climate.action";
+import { loadClimateError, loadClimateSuccess, loadingClimate } from "../actions/climate.action";
 import { IClimateState } from "../states/climate.state";
 
 export const initialState: IClimateState = {
