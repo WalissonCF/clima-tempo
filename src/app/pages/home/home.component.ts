@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Store, select } from '@ngrx/store';
+ 
 import { tap } from 'rxjs';
 
 import { OpenWeatherService } from 'src/app/core/services/open-weather-service/open-weather.service';
-import { OpenWeatherResponse } from 'src/app/core/models/open-weather-response.model';
+
+import { getClimate } from 'src/app/core/store/selectors/climate.selector';
+import { loadClimateSuccess } from 'src/app/core/store/actions/ climate.action';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +15,6 @@ import { OpenWeatherResponse } from 'src/app/core/models/open-weather-response.m
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  public openWeatherResponse: OpenWeatherResponse = {} as OpenWeatherResponse;
   private options: PositionOptions = {
     enableHighAccuracy: true, // Define para obter uma localização mais precisa (se possível)
     timeout: 5000, // Tempo limite para obter a localização (em milissegundos)
@@ -19,8 +22,13 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(
-    private openWeatherService: OpenWeatherService
+    private openWeatherService: OpenWeatherService,
+    private store: Store
   ) { }
+
+  climate$ = this.store.pipe(
+    select(getClimate)
+  );
 
   ngOnInit(): void {
     this.getLocationUser();
@@ -41,7 +49,7 @@ export class HomeComponent implements OnInit {
     const latitude: number = position.coords.latitude;
     const longitude: number = position.coords.longitude;
 
-    // this.getClimate(latitude, longitude);
+    this.getClimate(latitude, longitude);
     console.log(latitude, longitude);
   }
 
@@ -54,8 +62,12 @@ export class HomeComponent implements OnInit {
       .getClimate(latitude, longitude)
       .pipe(
         tap((response) => {
-          this.openWeatherResponse = response;
-          console.log('response', this.openWeatherResponse.current);
+          this.store.dispatch(loadClimateSuccess({ payload: response }));
+          this.climate$.subscribe({
+            next: (clima) => {
+              console.log('clima', clima);
+            }
+          });
         })
       )
       .subscribe();
