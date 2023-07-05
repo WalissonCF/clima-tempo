@@ -72,4 +72,15 @@ export class HomeComponent implements OnInit {
       )
       .subscribe();
   }
+
+  get temp(): string {
+    let tempAtual: string = '';
+
+    this.climate$.subscribe((temp) => {
+      if (temp && Object.keys(temp).length > 0) {
+        tempAtual = temp.current.temp.toFixed(0) + '°C';
+      }
+    });
+    return tempAtual || '0°C';
+  }
 }

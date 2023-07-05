@@ -1,12 +1,24 @@
 <div class="w-screen h-screen md:container md:mx-auto flex justify-center flex-col items-center bg-[#282a36]">
     <div class="h-screen w-3/4 py-6">
-        <div class="h-28 w-full bg-yellow-400 rounded-md">
-
-        </div>
-        <div class="h-96 my-6 bg-blue-400">
-            <div class="h-9 bg-red-400">
-
+        <div class="h-96">
+            <div class="h-9 text-center">
+                <p class="text-zinc-50 text-lg font-sans font-medium">Temperatura atual</p>
             </div>
+            <div class="h-3/6 text-center">
+                <h1 class="font-semibold text-9xl text-zinc-50">{{ temp }}</h1>
+            </div>
+        </div>
+        <div class="rounded-lg bg-success-100 px-6 py-5 text-base text-success-700 bg-[#FFD86C]" role="alert">
+            <h4 class="mb-2 text-2xl font-medium leading-tight text-yellow-700">Alertas!</h4>
+            <p class="mb-4 text-yellow-700">
+                Esta é a aba de alertas de clima para a sua região.
+                Aqui você encontrará informações valiosas sobre as condições meteorológicas atuais.
+            </p>
+            <hr class="border-success-600 border-yellow-600" />
+            <p class="mb-0 mt-4 text-yellow-700">
+                Fique atento às atualizações diárias do clima para melhor planejar suas atividades.
+                Qualquer mudança significativa será comunicada aqui.
+            </p>
         </div>
     </div>
     <!-- <div class="box-content h-full w-96">
