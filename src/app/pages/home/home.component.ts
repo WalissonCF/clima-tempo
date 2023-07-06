@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
  
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { OpenWeatherService } from 'src/app/core/services/open-weather-service/open-weather.service';
 
@@ -17,7 +17,7 @@ import { loadClimateSuccess } from 'src/app/core/store/actions/climate.action';
 export class HomeComponent implements OnInit {
   private options: PositionOptions = {
     enableHighAccuracy: true, // Define para obter uma localização mais precisa (se possível)
-    timeout: 5000, // Tempo limite para obter a localização (em milissegundos)
+    timeout: 10000, // Tempo limite para obter a localização (em milissegundos)
     maximumAge: 0 // Descarta a localização em cache
   };
 
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
     const latitude: number = position.coords.latitude;
     const longitude: number = position.coords.longitude;
 
-    // this.getClimate(latitude, longitude);
+    this.getClimate(latitude, longitude);
     console.log(latitude, longitude);
   }
 
@@ -76,11 +76,26 @@ export class HomeComponent implements OnInit {
   get temp(): string {
     let tempAtual: string = '';
 
-    this.climate$.subscribe((temp) => {
-      if (temp && Object.keys(temp).length > 0) {
-        tempAtual = temp.current.temp.toFixed(0) + '°C';
-      }
-    });
+    this.climate$.pipe(
+      map((climate) => {
+        if (climate && Object.keys(climate).length > 0) {
+          tempAtual = climate.current.temp.toFixed(0) + '°C';
+        }
+      })
+    ).subscribe();
     return tempAtual || '0°C';
+  }
+
+  get hasAlerts(): boolean {
+    let alert: boolean = false;
+
+    this.climate$.pipe(
+      map((climate) => {
+        if (climate.alerts && Object.keys(climate.alerts)) {
+          alert = true
+        }
+      })
+    ).subscribe();
+    return alert;
   }
 }
