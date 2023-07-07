@@ -1,5 +1,5 @@
-<div class="w-screen h-screen md:container md:mx-auto flex justify-center flex-col items-center bg-[#282a36]">
-    <div class="h-screen w-3/4 py-6">
+<div class="w-screen h-full md:container md:mx-auto flex justify-center flex-col items-center bg-[#282a36]">
+    <div class="h-full w-3/4 py-6">
         <div class="h-96">
             <div class="h-9 text-center">
                 <p class="text-zinc-50 text-lg font-sans font-medium">Temperatura atual</p>
@@ -7,13 +7,22 @@
 
             <div class="h-3/6 text-center">
                 <h1 class="font-semibold text-9xl text-zinc-50">{{ temp }}</h1>
+                <div class="mt-3" *ngIf="climate$ | async as climate">
+                    <p class="font-semibold text-zinc-50">
+                        Umidade: {{
+                            climate.current.humidity + '%'
+                        }}
+                    </p>
+                </div>
             </div>
 
-            <div class="h-28 grid grid-cols-8 gap-1 overflow-hidden" *ngIf="climate$ | async as climate">
-                <div *ngFor="let daily of climate.daily">
+            <div class="h-28 w-full flex overflow-auto" *ngIf="climate$ | async as climate">
+                <div class="w-full mx-2 min-w-[80px] hover:bg-[#343746] cursor-pointer rounded" *ngFor="let daily of climate.daily">
                     <div class="h-1/2 text-center">
                         <p class="text-zinc-50 font-semibold">
-                            Dia
+                            {{
+                                getDayOfWeek(daily.dt)
+                            }}
                         </p>
                         <p class="text-zinc-50 font-semibold">
                             {{
@@ -24,7 +33,7 @@
                     <div class="h-1/2 flex">
                         <div class="w-1/2 text-center">
                             <p class="text-zinc-500 font-semibold">
-                                mix
+                                Mín.
                             </p>
                             <p class="text-zinc-500 font-semibold">
                                 {{
@@ -34,7 +43,7 @@
                         </div>
                         <div class="w-1/2 text-center">
                             <p class="text-zinc-50 font-semibold">
-                                max
+                                Máx.
                             </p>
                             <p class="text-zinc-50 font-semibold">
                                 {{

@@ -8,6 +8,7 @@ import { OpenWeatherService } from 'src/app/core/services/open-weather-service/o
 
 import { getClimate } from 'src/app/core/store/selectors/climate.selector';
 import { loadClimateSuccess } from 'src/app/core/store/actions/climate.action';
+import { DateUtils } from 'src/app/core/utils/date.utils';
 
 @Component({
   selector: 'app-home',
@@ -97,5 +98,11 @@ export class HomeComponent implements OnInit {
       })
     ).subscribe();
     return alert;
+  }
+
+  getDayOfWeek(dt: number): string {
+    const date = new Date(dt * 1000);
+    const dayIndex = date.getDay();
+    return DateUtils.daysOfWeekAbbreviations[dayIndex];
   }
 }
