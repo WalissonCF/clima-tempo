@@ -1,8 +1,3 @@
-description: Build and deploy an Angular 16 frontend application
-tags:
-  - angular
-  - frontend
-
 timeout: 1800s
 
 substitutions:
