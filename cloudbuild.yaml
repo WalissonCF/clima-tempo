@@ -1,0 +1,37 @@
+description: Build and deploy an Angular 16 frontend application
+tags:
+  - angular
+  - frontend
+
+timeout: 1800s
+
+substitutions:
+  _APP_BUCKET_NAME: clima-tempo-wally
+
+steps:
+  - id: install_packages
+    name: gcr.io/cloud-builders/npm:node-18.12.0  
+    entrypoint: npm
+    args:
+      - install
+
+  - id: prerender_browser_files
+    name: gcr.io/cloud-builders/npm:node-18.12.0  
+    entrypoint: npm
+    args: ['run', 'build']
+    waitFor:
+      - install_packages
+
+  # - id: copy _prerendered files 
+  #   name: gcr.io/cloud-builders/gsutil 
+  #   args: [ '-h', 'Cache-Control: public, max-age-604800',
+  #           '-m',
+  #           'ср',
+  #           '-z', 'html, css, js, json, xml',
+  #           'r', 'dist/*', 'gs://${_APP_BUCKET_NAME}']
+  #   waitFor:
+  #     - prerender_browser_files
+
+  # - id: set _website_configuration
+  #   name: 'gcr.io/cloud-builders/gsutil'
+  #   args: [ 'web', 'set', '-m', 'index.html', 'gs://${_APP_BUCKET_NAME}']
